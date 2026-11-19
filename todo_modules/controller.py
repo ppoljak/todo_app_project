@@ -1,9 +1,10 @@
 from .models import Task
+from .storage import StorageFun as store
 
 # Task Controller -- Managing Task Objects
 class ToDoList:
     def __init__(self):
-        self._tasks = []
+        self._tasks = store.load_from_json()
 
     def get_task(self, task_id: int = 0):
         """Retrieve tasks by their ID."""
@@ -14,6 +15,7 @@ class ToDoList:
         """Create a new task"""
         if task_type == "regular":
             self._tasks.append(Task(text))
+        store.save_to_json(self._tasks)
 
     def read_tasks(self):
         """Returns a list of tasks."""
@@ -28,8 +30,10 @@ class ToDoList:
             task.update_text(text)
         if toggle:
             task.toggle_done()
+        store.save_to_json(self._tasks)
 
     def delete_task(self, task_id: int):
         """Selects a task by ID in the list of tasks and deletes it."""
         if self.get_task(task_id):
             self._tasks.pop(task_id)
+        store.save_to_json(self._tasks)

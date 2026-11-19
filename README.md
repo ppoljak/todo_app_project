@@ -7,13 +7,14 @@ Simple CLI-based To-Do App
 - Read Tasks
 - Update Task
 - Delete Task
+- JSON persistance
 
 ## Modules
 
 `models.py` -- Task Object - e.g. Regular -- Recurring, Deadline are not implemented yet...
 `controller.py` -- Manage the Task object -- Create, Read, Update, Delete ...   
 `viewer_cli.py` -- CLI interaction with user -- Communication between user and controller    
-`storage.py` -- Storage functions for storing and loading from .json files -- not implemented yet...   
+`storage.py` -- Storage functions for storing and loading from .json files 
 `validation.py` -- Validation function for validating of user input
 `main.py` -- Main file for running the app  
 
@@ -25,7 +26,6 @@ python -m main
 
 ## Next Improvements
 
-- JSON persistance
 - Recurring, Deadline Tasks ...
 - Filtering, Sorting
 - Statistics
