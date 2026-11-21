@@ -8,6 +8,8 @@ Simple CLI-based To-Do App
 - Update Task
 - Delete Task
 - JSON persistance
+- Filtering and Sorting
+- Statistics
 
 ## Modules
 
@@ -26,5 +28,4 @@ python -m main
 
 ## Next Improvements
 
-- Filtering, Sorting
-- Statistics
+- Task Conversion

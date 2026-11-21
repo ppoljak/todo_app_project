@@ -45,3 +45,50 @@ class ToDoList:
         if self.get_task(task_id):
             self._tasks.pop(task_id)
         store.save_to_json(self._tasks)
+
+    def search_tasks(self, user_input: str):
+        """Returns a list of tasks based on the user's search."""
+        searched_tasks = list(filter(lambda task: user_input.lower() in task._text.lower(), self._tasks))
+        return searched_tasks
+
+    def filter_tasks(self):
+        """Returns a dictionary with data filtered by completion status and task type."""
+        completed = list(filter(lambda task: task._done, self._tasks))
+        pending = list(filter(lambda task: not task._done, self._tasks))
+        regular = list(filter(lambda task: type(task) == Task, self._tasks))
+        recurring = list(filter(lambda task: isinstance(task, RecurringTask), self._tasks))
+        deadline = list(filter(lambda task: isinstance(task, DeadlineTask), self._tasks))
+        return {
+            "completed": completed,
+            "pending": pending,
+            "regular": regular,
+            "recurring": recurring,
+            "deadline": deadline
+        }
+
+    @staticmethod
+    def sort_fun(task):
+        if isinstance(task, DeadlineTask):
+            return (1, task.days_left())
+        elif isinstance(task, RecurringTask):
+            order = {"DAILY": 0, "WEEKLY": 1, "MONTHLY": 2, "YEARLY": 3}
+            return (2, order.get(task._frequency, 99))
+        else:
+            return (3, 0)
+
+    def sort_by_importance(self):
+        """Returns sorted list of task based on the importance."""
+        return sorted(self._tasks, key = self.sort_fun)
+
+    def statistics(self):
+        """Returns statistics on the completion of tasks."""
+        total = len(self._tasks)
+        completed = len(list(filter(lambda task: task._done, self._tasks)))
+        pending = len(list(filter(lambda task: not task._done, self._tasks)))
+        percentage = round(completed/total*100, 0) if total else 0
+        return {
+            "total": total,
+            "completed": completed,
+            "pending": pending,
+            "percentage": percentage
+        }
