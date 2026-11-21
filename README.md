@@ -11,11 +11,11 @@ Simple CLI-based To-Do App
 
 ## Modules
 
-`models.py` -- Task Object - e.g. Regular -- Recurring, Deadline are not implemented yet...
+`models.py` -- Task Object - Regular, Recurring, Deadline  
 `controller.py` -- Manage the Task object -- Create, Read, Update, Delete ...   
 `viewer_cli.py` -- CLI interaction with user -- Communication between user and controller    
-`storage.py` -- Storage functions for storing and loading from .json files 
-`validation.py` -- Validation function for validating of user input
+`storage.py` -- Storage functions for storing and loading from .json files   
+`validation.py` -- Validation function for validating of user input  
 `main.py` -- Main file for running the app  
 
 ## How to Run
@@ -26,6 +26,5 @@ python -m main
 
 ## Next Improvements
 
-- Recurring, Deadline Tasks ...
 - Filtering, Sorting
 - Statistics

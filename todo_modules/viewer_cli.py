@@ -1,4 +1,5 @@
 from .validation import ValidationFun as valid
+from .models import RecurringTask, DeadlineTask
 
 #utility functions
 def print_enumerated(items: list):
@@ -47,9 +48,21 @@ class ViewerCLI:
             self.delete_task_cli()
 
     def create_task_cli(self):
+        task_types = ["regular", "recurring", "deadline"]
+        option = valid.valid_option("Select the task type", task_types)
+        print()
         text = valid.is_empty("Enter a new task")
-        self._controller.create_task(text)
-
+        print()
+        if option == "regular":
+            self._controller.create_task(text)
+        elif option == "recurring":
+            frequencies = ["daily", "weekly", "monthly", "yearly"]
+            frequency = valid.valid_option("Select the frequency", frequencies).upper()
+            self._controller.create_task(text, frequency, option)
+        elif option == "deadline":
+            deadline = valid.validate_date("Enter the deadline")
+            self._controller.create_task(text, deadline, option)
+                    
     def read_tasks_cli(self):
         if not self._tasks:
             print("No tasks to show.")
@@ -61,7 +74,7 @@ class ViewerCLI:
             print("No task to update.")
             return
         
-        options = ["update text", "toggle status"]
+        options = ["update text", "toggle status", "update frequency", "update deadline"]
         print_enumerated(options)
         print()
         option_id = valid.valid_number("Choose an option", options)
@@ -80,7 +93,23 @@ class ViewerCLI:
 
         if options[option_id] == "toggle status":
             self._controller.update_task(task_id, toggle = True)
+
+        if options[option_id] == "update frequency":
+            if isinstance(self._tasks[task_id], RecurringTask):
+                frequencies = ["daily", "weekly", "monthly", "yearly"]
+                new_frequency = valid.valid_option("Select the new frequency", frequencies).upper()
+                self._controller.update_task(task_id, additional_info = new_frequency)
+            else:
+                print("Selected task is not recurring.")
+
+        if options[option_id] == "update deadline":
+            if isinstance(self._tasks[task_id], DeadlineTask):
+                new_deadline = valid.validate_date("Enter the new deadline")
+                self._controller.update_task(task_id, additional_info = new_deadline)
+            else:
+                print("Selected task is not deadline.")
         
+
     def delete_task_cli(self):
         if not self._tasks:
             print("No task to delete.")

@@ -1,3 +1,5 @@
+import datetime as dt
+
 # Validation Object -- contain Validation Functions
 class ValidationFun:
     @staticmethod
@@ -53,3 +55,20 @@ class ValidationFun:
             if option in options_lower:
                 return option
             print("Not a valid option.")
+
+    @staticmethod
+    def validate_date(text: str = "Enter the date"):
+        """prompts the user to enter a date until they enter a date in the future in the correct format"""
+        while True:
+            user_input = input(f"{text} [DD.MM.YYYY.]: ").strip()
+            if not user_input.endswith("."):
+                user_input += "."
+            try:
+                date = dt.datetime.strptime(user_input, "%d.%m.%Y.").date()
+            except ValueError:
+                print("Date needs to be in format [DD.MM.YYYY.].")
+                continue
+            if date<dt.date.today():
+                print("Date needs to be in future")
+                continue
+            return date
